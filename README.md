@@ -51,8 +51,9 @@ Before you start, make sure you have the following installed:
 
    \* You can pull other branches to get different templates. Check out [Invrz Templates](https://github.com/) to know more.
 
-   d. Remove the template remote and add your own project's remote with a suitable remote name:
+   d. Remove the template remote and add your own project's remote with a suitable remote name by navigating back to project root:
    ```bash
+   cd ..
    git remote remove template
    git remote add {remoteName} {gitURL}
    ```
