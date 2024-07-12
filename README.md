@@ -27,20 +27,44 @@ Before you start, make sure you have the following installed:
 
 ### Installation
 
-1. **Clone the Repository**
+1. **Fetch the template from Repository**
 
-   Clone this repository to your local machine:
+   Follow these `git` commands to setup your project with this template:
 
+   a. Create a folder for your project and navigate into it:
    ```bash
-   git clone https://github.com/your-username/vite-react-invrz-template.git
-   cd vite-react-invrz-template
+   mkdir {projectName}
+   cd {projectName}
    ```
+
+   b. Initialize Git and add template as remote: 
+   ```bash
+   git init
+   git remote add template https://github.com/shivendrasaurav/StackTemplates.git
+   ```
+
+   c. Fetch the template and pull the latest code from the `react-w-router` branch:
+   ```bash
+   git fetch template
+   git pull template react-w-router
+   ```
+
+   \* You can pull other branches to get different templates. Check out [Invrz Templates](https://github.com/) to know more.
+
+   d. Remove the template remote and add your own project's remote with a suitable remote name:
+   ```bash
+   git remote remove template
+   git remote add {remoteName} {gitURL}
+   ```
+
 
 2. **Install Dependencies**
 
-   Run the following command to install all necessary dependencies:
+   Navigate to the `ui` folder where the `react-w-router` code resides, and then install the packages using `npm` or `yarn`, or any other package manager you prefer:
 
    ```bash
+   cd ui
+
    npm install
    # or
    yarn install
@@ -56,7 +80,7 @@ Before you start, make sure you have the following installed:
    yarn dev
    ```
 
-   Open your browser and navigate to `http://localhost:3000` to see the application in action.
+   Open your browser and navigate to `http://localhost:5173`(default) to see the application in action.
 
 ## Project Structure
 
@@ -131,9 +155,9 @@ export default App;
 - **`/contact`**: Renders the `ContactForm` component
 - **`/quote/:index`**: Renders the `QuoteGenerator` component with a dynamic `:index` parameter
 
-### Adding a New Route
+### Adding/Modifying a New/Existing Route
 
-To add a new route, follow these steps:
+To add a new route or modify existing route, follow these steps:
 
 1. **Create a New Component**
 
@@ -144,44 +168,42 @@ To add a new route, follow these steps:
    Import the new component into `App.tsx`:
 
    ```tsx
-   import NewPage from './routes/newpage/page';
+   import NewComponent from './routes/newpage/page';
    ```
 
-3. **A. Add the Route**
+3. **Add or Modify a Route**
 
-   Add a new `<Route />` element in the `Routes` block of `App.tsx`:
+   * **To add a new Route**: Add a new `<Route />` element in the `Routes` block of `App.tsx`:
 
-   ```tsx
-   <Route path="/newpage" element={<NewPage />} />
-   ```
+        ```tsx
+        <Route path="/newroute" element={<NewComponent />} />
+        ```
 
-   For example, to add an "About" page:
+        For example, to add an "About" page:
 
-   ```tsx
-   import About from './routes/about/page';
-   // Add this line in the <Routes> block
-   <Route path="/about" element={<About />} />
-   ```
-   ```
+        ```tsx
+        + import About from './routes/about/page';
+          // Add this line in the <Routes> block
+        + <Route path="/about" element={<About />} />
+        ```
 
-4. **B. Or Modify a Route**
+    * **To Modify an Existing Route**: Replace any `<Route />` element in the `Routes` block of `App.tsx`:
 
-   Replace any `<Route />` element in the `Routes` block of `App.tsx`:
+        ```tsx
+        <Route path="/modifiedroute" element={<NewComponent />} />
+        ```
 
-   ```tsx
-   <Route path="/newpage" element={<NewPage />} />
-   ```
+        For example, to replace the "Counter" with "About" page:
 
-   For example, to replace the "Counter" with "About" page:
-
-   ```tsx
-   - import Counter from './routes/counter/page';
-   + import About from './routes/about/page';
-     // Change this line in the <Routes> block
-   - <Route path="/counter" element={<Counter />} />
-   + <Route path="/about" element={<About />} />
-   ```
-   If you haven't worked with diff before, in the above example, "-" represents lines of code which existed earlier, whilst "+" represent the code which replaces earlier code.
+        ```tsx
+        - import Counter from './routes/counter/page';
+        + import About from './routes/about/page';
+            // Change this line in the <Routes> block
+        - <Route path="/counter" element={<Counter />} />
+        + <Route path="/about" element={<About />} />
+        ```
+        
+   \* If you haven't worked with diff before, in the above example, "-" represents lines of code which existed earlier, whilst "+" represents the new or modified code.
 
 ## Links
 
