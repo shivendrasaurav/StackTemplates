@@ -1,25 +1,22 @@
-# Stack templates for popular stacks
-### Add this git repo as remote and pull branchName to pull stack template. Here's a list of templates added:
-
-- `react-w-router` - to pull template for React with Vite app initialized with React Router and Patterns UI by Invrz
-- `fastapi-postgres` - to pull template for FastAPI initialized with Router and a Microservice with PostgreSQL Connection.
-# Vite + React + Invrz Template
+# FastAPI + PostgreSQL Microservice Template
 
 ## Introduction
 
-Welcome to the **Vite + React + Invrz** project template! 🎉 This template is designed to help you quickly get started with a new React application using Vite as the build tool and Invrz Patterns for UI components and design.
+Welcome to the **FastAPI + PostgreSQL Microservice** project template! 🚀 This template is designed to help you quickly get started with building scalable microservices using FastAPI as the web framework and PostgreSQL as the database.
 
-This project includes a basic setup with React Router for routing and a few example components to demonstrate how to structure your app and add new pages.
+This project includes a basic setup with a sample microservice, database connection, and authentication mechanism to demonstrate how to structure your app and add new services.
 
 ## Project Overview
 
-In this template, you will find an example of how to use `react-router-dom` for routing and how to integrate Invrz Patterns into your React application.
+In this template, you will find an example of how to use FastAPI to create a microservice architecture with PostgreSQL database integration and a simple authentication system.
 
 ### Key Features
 
-- **React Router v7** for client-side routing
-- **Invrz Patterns UI** for modern and responsive design components
-- Example components including a counter, contact form, and quote generator
+- **FastAPI** for building high-performance APIs
+- **PostgreSQL** integration for robust data storage
+- Microservice architecture setup
+- Basic authentication mechanism
+- Example service with user management operations
 
 ## Getting Started
 
@@ -27,14 +24,15 @@ In this template, you will find an example of how to use `react-router-dom` for 
 
 Before you start, make sure you have the following installed:
 
-- [Node.js](https://nodejs.org/) (v14 or later)
-- [npm](https://www.npmjs.com/) or [Yarn](https://yarnpkg.com/) for package management
+- [Python](https://www.python.org/) (v3.7 or later)
+- [PostgreSQL](https://www.postgresql.org/)
+- [Git](https://git-scm.com/)
 
 ### Installation
 
 1. **Fetch the template from Repository**
 
-   Follow these `git` commands to setup your project with this template:
+   Follow these `git` commands to set up your project with this template:
 
    a. Create a folder for your project and navigate into it:
    ```bash
@@ -48,13 +46,11 @@ Before you start, make sure you have the following installed:
    git remote add template https://github.com/shivendrasaurav/StackTemplates.git
    ```
 
-   c. Fetch the template and pull the latest code from the `react-w-router` branch:
+   c. Fetch the template and pull the latest code from the `fastapi-postgres` branch:
    ```bash
    git fetch template
-   git pull template react-w-router
+   git pull template fastapi-postgres
    ```
-
-   \* You can pull other branches to get different templates. Check out [Invrz Templates](https://github.com/) to know more.
 
    d. Remove the template remote and add your own project's remote with a suitable remote name:
    ```bash
@@ -62,160 +58,162 @@ Before you start, make sure you have the following installed:
    git remote add {remoteName} {gitURL}
    ```
 
-
 2. **Install Dependencies**
 
-   Navigate to the `ui` folder where the `react-w-router` code resides, and then install the packages using `npm` or `yarn`, or any other package manager you prefer:
+   Install the required packages using pip:
 
    ```bash
-   cd ui
-
-   npm install
-   # or
-   yarn install
+   pip install -r requirements.txt
    ```
 
-3. **Start the Development Server**
+3. **Configure the Database**
 
-   Start the Vite development server:
+   Update the database configuration in `server/services/newservice/config.py` with your PostgreSQL credentials.
+
+4. **Start the Development Server**
+
+   Start the FastAPI development server:
 
    ```bash
-   npm run dev
-   # or
-   yarn dev
+   python server/main.py
    ```
 
-   Open your browser and navigate to `http://localhost:5173`(default) to see the application in action.
+   Open your browser and navigate to `http://127.0.0.1:8000/docs` to see the Swagger UI for your API.
 
 ## Project Structure
 
 Here's an overview of the project structure:
 
 ```
-/src
-  /assets
-    react.svg
-    vite.svg
-  /routes
-    /_home
-      page.tsx
-    /contact
-      page.tsx
-    /counter
-      page.tsx
-    /quotes
-      page.tsx
-    /todo
-      page.tsx
-  App.tsx
-  App.css
-  index.css
-  main.tsx
-  other react files
+/server
+  /services
+    /newservice
+      apis.py      # contains all API endpoints
+      config.py    # contains config related to the current service
+      db.py        # contains database connection method and database execution queries
+      main.py      # contains FastAPI runner if someone wants to run a service as standalone service
+      models.py    # contains data models used by APIs and Database Queries
+  config.py        # contains config related to or usable for whole project
+  main.py          # contains FastAPI runner for the whole project and its services
 ```
 
-### Components
+### Configuration
 
-- **`Home`**: Welcome page and introduction to the template
-- **`Counter`**: Simple counter example component
-- **`ContactForm`**: Contact form with a basic `handleSubmit` function
-- **`QuoteGenerator`**: Component that displays quotes based on the URL parameter
-- **`TodoList`**: Basic todo list example
+- **`server/config.py`**: Contains global configuration for the entire application.
+- **`server/services/newservice/config.py`**: Contains configuration specific to the `newservice` microservice.
 
-### Routes
+### Main Application
 
-The `App.tsx` file configures the routes for the application:
+The `server/main.py` file configures the main FastAPI application and includes routers from different services:
 
-```tsx
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Counter from './routes/counter/page';
-import ContactForm from './routes/contact/page';
-import QuoteGenerator from './routes/quotes/page';
-import TodoList from './routes/todo/page';
-import Home from './routes/_home/page';
+```python
+from fastapi import FastAPI
+from config import config
+from services.newservice.apis import router as newservice_router
 
-import "./App.css";
-import "patterns-ui/styles/main.css";
+app = FastAPI(title=config.APP_NAME, debug=config.DEBUG)
 
-const App = () => {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/counter" element={<Counter />} />
-        <Route path="/todos" element={<TodoList />} />
-        <Route path="/contact" element={<ContactForm />} />
-        <Route path="/quote/:index" element={<QuoteGenerator />} />
-      </Routes>
-    </Router>
-  );
-};
+# Include routers from different services
+app.include_router(newservice_router, prefix="/newservice")
 
-export default App;
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to the FastAPI microservice!"}
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host=config.APP_HOST, port=config.APP_PORT, log_level=config.LOG_LEVEL)
 ```
 
-- **`/`**: Renders the `Home` component
-- **`/counter`**: Renders the `Counter` component
-- **`/todos`**: Renders the `TodoList` component
-- **`/contact`**: Renders the `ContactForm` component
-- **`/quote/:index`**: Renders the `QuoteGenerator` component with a dynamic `:index` parameter
+### Models
 
-### Adding/Modifying a New/Existing Route
+The `models.py` file defines Pydantic models for request/response schemas and SQLAlchemy models for database operations:
 
-To add a new route or modify existing route, follow these steps:
+```python
+from pydantic import BaseModel
+from sqlalchemy import Column, Integer, String
 
-1. **Create a New Component**
+class UserBase(BaseModel):
+    name: str
+    email: str
 
-   Add a new component in the `routes` directory.
+class UserCreate(UserBase):
+    pass
 
-2. **Import the Component**
+class UserResponse(UserBase):
+    id: int
+```
 
-   Import the new component into `App.tsx`:
+### Database Operations
 
-   ```tsx
-   import NewComponent from './routes/newpage/page';
-   ```
+The `db.py` file contains functions for database connections and operations:
 
-3. **Add or Modify a Route**
+```python
+import psycopg2
+from .config import newserviceconfig
 
-   * **To add a new Route**: Add a new `<Route />` element in the `Routes` block of `App.tsx`:
+def get_db_conn():
+    conn = psycopg2.connect(
+        dbname=newserviceconfig.DB_NAME,
+        user=newserviceconfig.DB_USER,
+        password=newserviceconfig.DB_PASSWORD,
+        host=newserviceconfig.DB_HOST,
+        port=newserviceconfig.DB_PORT
+    )
+    return conn
 
-        ```tsx
-        <Route path="/newroute" element={<NewComponent />} />
-        ```
+def create_user(name: str, email: str):
+    # Execute queries and return results
 
-        For example, to add an "About" page:
+def get_user(user_id: int):
+    # Execute queries and return results
+```
 
-        ```tsx
-        + import About from './routes/about/page';
-          // Add this line in the <Routes> block
-        + <Route path="/about" element={<About />} />
-        ```
+### API Endpoints
 
-    * **To Modify an Existing Route**: Replace any `<Route />` element in the `Routes` block of `App.tsx`:
+The `apis.py` file defines the API endpoints for the microservice:
 
-        ```tsx
-        <Route path="/modifiedroute" element={<NewComponent />} />
-        ```
+```python
+from fastapi import APIRouter, Depends, HTTPException, Header
+from .config import newserviceconfig
+from .db import get_db_conn, create_user, get_user
+from .models import UserBase, UserCreate, UserResponse
 
-        For example, to replace the "Counter" with "About" page:
+router = APIRouter()
+AUTH_KEY = newserviceconfig.SERVICE_AUTH_KEY
 
-        ```tsx
-        - import Counter from './routes/counter/page';
-        + import About from './routes/about/page';
-            // Change this line in the <Routes> block
-        - <Route path="/counter" element={<Counter />} />
-        + <Route path="/about" element={<About />} />
-        ```
-        
-   \* If you haven't worked with diff before, in the above example, "-" represents lines of code which existed earlier, whilst "+" represents the new or modified code.
+# API endpoints for user management
+@router.get("/getauthtoken/")
+async def get_auth_key():
+    return {"auth_key": AUTH_KEY}
+
+@router.get("/createnewuser/")
+async def create_new_user(auth_key: str = Depends(get_token_from_header)):
+    # Implementation for creating a new user
+
+@router.get("/getuserwithid/{userid}")
+async def get_user_data(userid: int, auth_key: str = Depends(get_token_from_header)):
+    # Implementation for getting user data
+```
+
+## Adding a New Microservice
+
+To add a new microservice, follow these steps:
+
+1. Create a new directory under `server/services/` for your service.
+2. Create the necessary files (`apis.py`, `config.py`, `db.py`, `main.py`, `models.py`) in the new service directory.
+3. Update the `server/main.py` file to include the router for your new service.
+
+## Authentication
+
+This template includes a basic authentication mechanism using an `AUTH_KEY`. To access protected endpoints, you need to include the `Service-Auth-Key` header in your requests.
 
 ## Links
 
-- [Vite Documentation](https://vitejs.dev/)
-- [React Documentation](https://react.dev/)
-- [Invrz Patterns Documentation](https://patterns.invrz.com/)
-- [React Router Documentation](https://reactrouter.com/)
+- [FastAPI Documentation](https://fastapi.tiangolo.com/)
+- [PostgreSQL Documentation](https://www.postgresql.org/docs/)
+- [SQLAlchemy Documentation](https://docs.sqlalchemy.org/)
+- [Pydantic Documentation](https://pydantic-docs.helpmanual.io/)
 
 ## Contributing
 
@@ -227,4 +225,4 @@ This project is licensed under the [MIT License](LICENSE).
 
 ---
 
-This `README.md` provides a comprehensive guide for users to understand the purpose of the project, how to get started, and how to modify the routes. It also includes links to relevant resources for Vite, React, and Invrz Patterns.
+This README provides a comprehensive guide for users to understand the purpose of the project, how to get started, and how to work with the FastAPI + PostgreSQL microservice template. It includes information about the project structure, configuration, database operations, API endpoints, and instructions for adding new microservices.
