@@ -2,11 +2,24 @@
 
 from fastapi import FastAPI
 from config import config
+from fastapi.middleware.cors import CORSMiddleware
+
 from services.newservice.apis import router as newservice_router
 
 # from services.other_service.api import router as other_router
 
 app = FastAPI(title=config.APP_NAME, debug=config.DEBUG)
+
+# CORS configuration
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "*"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Include routers from different services
 app.include_router(newservice_router, prefix="/newservice")
